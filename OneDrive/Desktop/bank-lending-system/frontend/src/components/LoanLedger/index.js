@@ -3,8 +3,10 @@
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './index.css'; // Component-specific styles
+import './index.css'; // Import component-specific styles
 
+// IMPORTANT: Updated API_BASE_URL to your LOCALHOST backend URL for local testing.
+// Remember to change it back to the Render.com URL when deploying!
 const API_BASE_URL = 'http://localhost:5000/api/v1';
 
 const LoanLedger = ({ customerId, loans }) => {

@@ -4,7 +4,8 @@
 import React from 'react'; // No state or effects needed here, data comes from props
 import './index.css'; // Component-specific styles
 
-const CustomerOverview = ({ customerId, overviewData, loading, error }) => {
+// Corrected props: now directly uses 'loans' and 'customerName'
+const CustomerOverview = ({ customerId, loans, customerName, loading, error, onViewLedger }) => {
     return (
         <div className="customer-overview-container">
             <h2>Your Loan Overview</h2>
@@ -15,14 +16,17 @@ const CustomerOverview = ({ customerId, overviewData, loading, error }) => {
             {error && <p className="error-message">{error}</p>}
 
             {/* Render overview details if data is available and not loading/erroring */}
-            {overviewData && !loading && !error && (
+            {/* Check 'customerName' to ensure data has been fetched successfully */}
+            {customerName && !loading && !error && (
                 <div className="overview-details">
-                    <h3>Overview for: {overviewData.customer_name || customerId}</h3> {/* Displays customer name or ID */}
-                    <p>Total Loans: <strong>{overviewData.total_loans}</strong></p>
+                    {/* Use customerName prop directly */}
+                    <h3>Overview for: {customerName}</h3> 
+                    {/* Use loans.length directly for total loans */}
+                    <p>Total Loans: <strong>{loans.length}</strong></p>
 
-                    {overviewData.total_loans > 0 ? (
+                    {loans.length > 0 ? ( // Check the actual loans array length
                         <div className="loans-list">
-                            {overviewData.loans.map(loan => (
+                            {loans.map(loan => ( // Map over the actual loans array
                                 <div key={loan.loan_id} className="loan-card">
                                     <h4>Loan ID: {loan.loan_id}</h4>
                                     <p>Principal Amount: ₹{loan.principal.toLocaleString('en-IN')}</p>
@@ -31,10 +35,14 @@ const CustomerOverview = ({ customerId, overviewData, loading, error }) => {
                                     <p>Monthly EMI: ₹{loan.emi_amount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                                     <p>Amount Paid: ₹{loan.amount_paid.toLocaleString('en-IN')}</p>
                                     <p>Estimated EMIs Left: {loan.emis_left}</p>
+                                    {/* Add a button to view ledger for this specific loan */}
+                                    <button onClick={() => onViewLedger(loan.loan_id)}>View Ledger</button>
                                 </div>
                             ))}
                         </div>
                     ) : (
+                        // This message is now handled by App.js based on customerLoans.length
+                        // but keeping it here as a fallback or for clarity if needed in other contexts.
                         <p className="info-message">No loans found for this customer. Perhaps apply for a new one!</p>
                     )}
                 </div>

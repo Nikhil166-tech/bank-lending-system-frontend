@@ -2,9 +2,10 @@
 // Component for submitting a new loan application.
 
 import React, { useState } from 'react';
-import './index.css'; // Component-specific styles
+import './index.css'; // Import component-specific styles
 
-const API_ENDPOINT = 'http://localhost:5000/api/v1/loans';
+// IMPORTANT: Updated API_ENDPOINT to your LIVE RENDER backend URL for deployment.
+const API_ENDPOINT = 'https://bank-lending-system-backend.onrender.com/api/v1/loans';
 
 const LoanApplication = ({ onLoanCreated }) => {
     // Form state variables
@@ -42,7 +43,7 @@ const LoanApplication = ({ onLoanCreated }) => {
         setIsSubmitting(true); // Show loading state
 
         const payload = {
-            customer_id: customerId.trim(),
+            customer_id: customerId.trim(), // Ensure customer ID is trimmed here too
             loan_amount: parseFloat(loanAmount),
             interest_rate_yearly: parseFloat(interestRateYearly),
             loan_period_years: parseInt(loanPeriodYears, 10),

@@ -1,54 +1,47 @@
 // PaymentForm/index.js
-// Component for recording a payment against an existing loan.
+// Component for recording a loan payment.
 
 import React, { useState, useEffect } from 'react';
 import './index.css'; // Component-specific styles
 
-const API_BASE_URL = 'http://localhost:5000/api/v1';
+// IMPORTANT: Updated API_BASE_URL to your LIVE RENDER backend URL for deployment.
+const API_BASE_URL = 'https://bank-lending-system-backend.onrender.com/api/v1';
 
 const PaymentForm = ({ loans, onPaymentRecorded }) => {
-    // State for selected loan and payment details
     const [selectedLoanId, setSelectedLoanId] = useState('');
-    const [paymentAmount, setPaymentAmount] = useState('');
-    const [paymentType, setPaymentType] = useState('EMI'); // Default to EMI
+    const [amount, setAmount] = useState('');
+    const [paymentType, setPaymentType] = useState('EMI');
 
-    // UI feedback state
-    const [responseFeedback, setResponseFeedback] = useState(null);
-    const [isPaymentSuccess, setIsPaymentSuccess] = useState(null);
-    const [isProcessingPayment, setIsProcessingPayment] = useState(false);
+    const [responseMessage, setResponseMessage] = useState(null);
+    const [isSuccess, setIsSuccess] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
 
-    // Effect to automatically select the first loan if available, or clear if none.
     useEffect(() => {
         if (loans && loans.length > 0) {
             setSelectedLoanId(loans[0].loan_id);
         } else {
-            setSelectedLoanId(''); // No loans to select
-            setResponseFeedback(null); // Clear any previous feedback
+            setSelectedLoanId('');
         }
-        setPaymentAmount(''); // Reset amount when loans change
-        // Removed: setIsPaymentSuccess(null); // This line was causing the issue
-    }, [loans]); // Re-run when the 'loans' prop changes
+        setAmount('');
+        setResponseMessage(null);
+        setIsSuccess(null);
+    }, [loans]);
 
-    /**
-     * Handles the payment form submission.
-     * Validates inputs, sends payment data to backend, and updates UI.
-     */
     const handleSubmit = async (event) => {
-        event.preventDefault(); // Prevent default form submission
+        event.preventDefault();
 
-        // Client-side validation
-        if (!selectedLoanId || parseFloat(paymentAmount) <= 0 || !paymentType) {
-            setIsPaymentSuccess(false);
-            setResponseFeedback({ text: 'Please select a loan, ensure payment amount is positive, and select a payment type.' });
+        if (!selectedLoanId || parseFloat(amount) <= 0 || !paymentType) {
+            setIsSuccess(false);
+            setResponseMessage({ message: 'Please select a Loan, ensure Amount is positive, and Payment Type is selected.' });
             return;
         }
 
-        setResponseFeedback(null); // Clear previous messages
-        setIsPaymentSuccess(null);
-        setIsProcessingPayment(true); // Show loading state
+        setResponseMessage(null);
+        setIsSuccess(null);
+        setIsLoading(true);
 
         const payload = {
-            amount: parseFloat(paymentAmount),
+            amount: parseFloat(amount),
             payment_type: paymentType,
         };
 
@@ -63,41 +56,32 @@ const PaymentForm = ({ loans, onPaymentRecorded }) => {
 
             const result = await response.json();
 
-            // --- DEBUGGING LOGS START ---
-            console.log('Payment API Response Status:', response.status);
-            console.log('Payment API Response.ok:', response.ok);
-            console.log('Payment API Response Body (result):', result);
-            // --- DEBUGGING LOGS END ---
-
             if (response.ok) {
-                setIsPaymentSuccess(true);
-                setResponseFeedback({
-                    text: result.message,
-                    data: result, // Contains remaining_balance, emis_left etc.
+                setIsSuccess(true);
+                setResponseMessage({
+                    message: result.message,
+                    data: result,
                 });
-                setPaymentAmount(''); // Clear amount field on success
-                setPaymentType('EMI'); // Reset payment type
+                setAmount('');
+                setPaymentType('EMI');
 
-                // Notify parent (App.js) to refresh customer overview
                 if (onPaymentRecorded) {
                     onPaymentRecorded();
                 }
 
             } else {
-                // Handle API errors (e.g., loan not found, loan paid off)
-                setIsPaymentSuccess(false);
-                setResponseFeedback({
-                    text: result.message || 'An unexpected server error occurred during payment. Please try again.',
+                setIsSuccess(false);
+                setResponseMessage({
+                    message: result.message || 'An unexpected error occurred on the server.',
                 });
             }
         } catch (error) {
-            // Handle network errors
-            setIsPaymentSuccess(false);
-            setResponseFeedback({
-                text: `Network error: ${error.message}. Please ensure your backend server is running and accessible.`,
+            setIsSuccess(false);
+            setResponseMessage({
+                message: `Network error: ${error.message}. Please ensure your backend server is running and accessible.`,
             });
         } finally {
-            setIsProcessingPayment(false); // End loading state
+            setIsLoading(false);
         }
     };
 
@@ -106,13 +90,13 @@ const PaymentForm = ({ loans, onPaymentRecorded }) => {
             <h2>Record a Loan Payment</h2>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="loanSelect">Select Loan to Pay:</label>
+                    <label htmlFor="loanSelect">Select Loan:</label>
                     <select
                         id="loanSelect"
                         value={selectedLoanId}
                         onChange={(e) => setSelectedLoanId(e.target.value)}
                         required
-                        disabled={!loans || loans.length === 0} // Disable if no loans available
+                        disabled={!loans || loans.length === 0}
                     >
                         {loans && loans.length > 0 ? (
                             loans.map(loan => (
@@ -121,21 +105,21 @@ const PaymentForm = ({ loans, onPaymentRecorded }) => {
                                 </option>
                             ))
                         ) : (
-                            <option value="">No active loans available</option>
+                            <option value="">No loans available</option>
                         )}
                     </select>
                 </div>
                 <div className="form-group">
-                    <label htmlFor="paymentAmount">Payment Amount (₹):</label>
+                    <label htmlFor="amount">Payment Amount (₹):</label>
                     <input
                         type="number"
-                        id="paymentAmount"
-                        value={paymentAmount}
-                        onChange={(e) => setPaymentAmount(e.target.value)}
-                        min="0.01" // Minimum payment amount
-                        step="0.01" // Allows decimal payments
+                        id="amount"
+                        value={amount}
+                        onChange={(e) => setAmount(e.target.value)}
+                        min="0.01"
+                        step="0.01"
                         required
-                        disabled={!selectedLoanId} // Disable if no loan is selected
+                        disabled={!selectedLoanId}
                     />
                 </div>
                 <div className="form-group">
@@ -145,31 +129,30 @@ const PaymentForm = ({ loans, onPaymentRecorded }) => {
                         value={paymentType}
                         onChange={(e) => setPaymentType(e.target.value)}
                         required
-                        disabled={!selectedLoanId} // Disable if no loan is selected
+                        disabled={!selectedLoanId}
                     >
                         <option value="EMI">EMI</option>
-                        <option value="LUMP_SUM">LUMP SUM</option>
+                        <option value="LUMP_SUM">LUMP_SUM</option>
                     </select>
                 </div>
-                <button type="submit" disabled={isProcessingPayment || !selectedLoanId}>
-                    {isProcessingPayment ? 'Processing Payment...' : 'Record Payment'}
+                <button type="submit" disabled={isLoading || !selectedLoanId}>
+                    {isLoading ? 'Processing Payment...' : 'Record Payment'}
                 </button>
             </form>
 
-            {/* Display payment feedback */}
-            {responseFeedback && (
-                <div className={`response-message ${isPaymentSuccess ? 'success-message' : 'error-message'}`}>
-                    {isPaymentSuccess ? (
+            {responseMessage && (
+                <div className={`response-message ${isSuccess ? 'success-message' : 'error-message'}`}>
+                    {isSuccess ? (
                         <>
-                            <strong>{responseFeedback.text}</strong><br />
-                            Payment ID: {responseFeedback.data.payment_id}<br />
-                            Loan ID: {responseFeedback.data.loan_id}<br />
-                            Remaining Balance: ₹{responseFeedback.data.remaining_balance.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}<br />
-                            Estimated EMIs Left: {responseFeedback.data.emis_left}
+                            <strong>{responseMessage.message}</strong><br />
+                            Payment ID: {responseMessage.data.payment_id}<br />
+                            Loan ID: {responseMessage.data.loan_id}<br />
+                            Remaining Balance: ₹{responseMessage.data.remaining_balance.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}<br />
+                            EMIs Left: {responseMessage.data.emis_left}
                         </>
                     ) : (
                         <>
-                            <strong>Error:</strong> {responseFeedback.text}
+                            <strong>Error:</strong> {responseMessage.message}
                         </>
                     )}
                 </div>
