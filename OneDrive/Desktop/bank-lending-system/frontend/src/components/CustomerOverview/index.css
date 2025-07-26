@@ -1,0 +1,119 @@
+/* CustomerOverview/index.css
+   Styles specific to the Customer Loan Overview component.
+*/
+
+.customer-overview-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 30px;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    background-color: #ffffff;
+    font-family: Arial, sans-serif;
+    text-align: left; /* Align text within the container */
+}
+
+.customer-overview-container h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 25px;
+    font-size: 24px;
+}
+
+.overview-details {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #eee; /* Separator line */
+}
+
+.overview-details h3 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    font-size: 22px;
+}
+
+.overview-details p {
+    margin-bottom: 10px;
+    color: #444;
+}
+
+.overview-details strong {
+    color: #007bff; /* Highlight key numbers */
+}
+
+.loans-list {
+    margin-top: 20px;
+    display: grid;
+    gap: 15px; /* Space between individual loan cards */
+}
+
+.loan-card {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* Subtle shadow for each loan card */
+}
+
+.loan-card h4 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #007bff;
+    font-size: 1.1em;
+    border-bottom: 1px dashed #ced4da; /* Separator for loan ID */
+    padding-bottom: 8px;
+}
+
+.loan-card p {
+    margin: 5px 0;
+    font-size: 0.95em;
+    color: #666;
+}
+
+/* Error and Info Messages (re-using global styles) */
+.error-message {
+    color: #dc3545;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 15px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.info-message {
+    color: #007bff;
+    background-color: #e7f3ff;
+    border: 1px solid #cce5ff;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 15px;
+    font-size: 0.9em;
+    text-align: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .customer-overview-container {
+        padding: 20px;
+        margin: 0 10px;
+    }
+    .customer-overview-container h2 {
+        font-size: 20px;
+    }
+    .overview-details h3 {
+        font-size: 18px;
+    }
+    .loan-card {
+        padding: 12px;
+    }
+    .loan-card h4 {
+        font-size: 1em;
+    }
+    .loan-card p {
+        font-size: 0.9em;
+    }
+}

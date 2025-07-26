@@ -1,0 +1,200 @@
+/* frontend/src/App.css */
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f0f2f5; /* Light gray background for the entire page */
+}
+
+.App {
+  text-align: center;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column; /* Stacks header, main, footer vertically */
+}
+
+/* Header Styling */
+.App-header {
+  background-color: #2c3e50; /* Darker blue-gray */
+  padding: 25px 20px;
+  color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* More prominent shadow */
+}
+
+.App-header h1 {
+  margin: 0;
+  font-size: 2.8em; /* Slightly larger title */
+  letter-spacing: 1px;
+}
+
+/* Navigation Bar in Header */
+.App-nav {
+    display: flex;
+    justify-content: center;
+    gap: 15px; /* Space between buttons */
+    margin-top: 20px;
+}
+
+.App-nav button {
+    padding: 10px 20px;
+    background-color: #007bff; /* Blue for navigation buttons */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.App-nav button:hover:not(:disabled) {
+    background-color: #0056b3;
+}
+
+.App-nav button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+
+/* Main Content Area */
+.App-main {
+  flex-grow: 1; /* Allows main content to take up available space */
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column; /* Stack elements inside main vertically */
+  align-items: center; /* Center horizontally */
+  gap: 20px; /* Space between sections */
+}
+
+.customer-id-input-section {
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.customer-id-input-section label {
+    font-weight: bold;
+    color: #333;
+    font-size: 1.1em;
+}
+
+.customer-id-input-section input {
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+    width: 200px; /* Fixed width for input */
+}
+
+.customer-id-input-section input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+/* Common form group and input styles (these are also in component CSS, but good to have a global fallback) */
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #555;
+}
+
+input[type="text"],
+input[type="number"],
+select {
+    width: calc(100% - 24px);
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+    background-color: #fff;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+/* Error and Info Messages (global styles for consistency) */
+.error-message {
+    color: #dc3545;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 15px;
+    font-weight: bold;
+    text-align: center;
+    width: 100%;
+    max-width: 600px; /* Constrain width */
+}
+
+.info-message {
+    color: #007bff;
+    background-color: #e7f3ff;
+    border: 1px solid #cce5ff;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 15px;
+    font-size: 0.9em;
+    text-align: center;
+    width: 100%;
+    max-width: 600px; /* Constrain width */
+}
+
+.loading-message {
+    color: #007bff;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+/* Footer Styling */
+footer {
+  background-color: #2c3e50;
+  color: white;
+  padding: 20px;
+  font-size: 0.9em;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .App-header h1 {
+    font-size: 2em;
+  }
+  .App-nav {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .App-nav button {
+    width: 80%;
+    margin: 0 auto;
+  }
+  .customer-id-input-section {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+  .customer-id-input-section input {
+    width: calc(100% - 30px); /* Adjust for padding */
+  }
+}

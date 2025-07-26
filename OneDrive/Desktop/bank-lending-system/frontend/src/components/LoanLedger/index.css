@@ -1,0 +1,160 @@
+/* LoanLedger/index.css
+   Styles specific to the Loan Ledger and Transaction History component.
+*/
+
+.loan-ledger-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 30px;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    background-color: #ffffff;
+    font-family: Arial, sans-serif;
+    text-align: left;
+}
+
+.loan-ledger-container h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 25px;
+    font-size: 24px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #555;
+}
+
+select {
+    width: calc(100% - 24px); /* Full width minus padding */
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+    background-color: #fff;
+}
+
+select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+.ledger-details {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #eee; /* Separator line */
+}
+
+.ledger-details h3 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    font-size: 22px;
+}
+
+.ledger-details p {
+    margin-bottom: 10px;
+    color: #444;
+}
+
+.ledger-details strong {
+    color: #007bff; /* Highlight key numbers */
+}
+
+.transactions-list {
+    list-style: none; /* Remove default list bullets */
+    padding: 0;
+    margin-top: 20px;
+    border-top: 1px dashed #eee; /* Dotted separator for transactions */
+    padding-top: 15px;
+}
+
+.transaction-item {
+    display: flex;
+    justify-content: space-between; /* Distribute items horizontally */
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f0f0; /* Separator between transactions */
+    font-size: 0.95em;
+    color: #555;
+}
+
+.transaction-item:last-child {
+    border-bottom: none; /* No border after the last item */
+}
+
+.transaction-date {
+    flex: 2; /* Takes more space */
+    font-weight: 600;
+}
+
+.transaction-type {
+    flex: 1; /* Takes less space */
+    text-align: center;
+    color: #6c757d; /* Muted color for type */
+}
+
+.transaction-amount {
+    flex: 2; /* Takes more space */
+    text-align: right;
+    font-weight: 600;
+    color: #28a745; /* Green for payment amounts */
+}
+
+/* Error and Info Messages (re-using global styles) */
+.error-message {
+    color: #dc3545;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 15px;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .loan-ledger-container {
+        padding: 20px;
+        margin: 0 10px;
+    }
+    .loan-ledger-container h2 {
+        font-size: 20px;
+    }
+    select {
+        font-size: 14px;
+        padding: 10px;
+    }
+    .ledger-details h3 {
+        font-size: 18px;
+    }
+    .ledger-details p {
+        font-size: 0.9em;
+    }
+    .transaction-item {
+        flex-direction: column; /* Stack transaction details vertically */
+        align-items: flex-start;
+        gap: 5px; /* Space between stacked items */
+        padding: 8px 0;
+    }
+    .transaction-date,
+    .transaction-type,
+    .transaction-amount {
+        flex: none; /* Remove flex sizing */
+        width: 100%; /* Take full width when stacked */
+        text-align: left; /* Align text to left */
+    }
+    .transaction-amount {
+        text-align: left; /* Ensure amount is also left-aligned when stacked */
+    }
+}
